@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const formidable = require('formidable');
 var fs = require('fs');
+const app = express();
 
 app.get('/', function(req, res) {
     res.sendfile("mcmods.html");
