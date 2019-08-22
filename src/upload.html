@@ -2,11 +2,18 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <title>upload</title>
     </head>
     <body>
-        <form method='post' action='upload' enctype="multipart/form-data">
-                <input type='file' name='fileUploaded'>
+        <form method='post' action='uploadit' enctype="multipart/form-data">
+                Author name: <input type="text" name="author" class="author" id="author" maxlength="30">
+                <br />
+                <!-- Thumbnail: <input type='file' name='Thumbnail' accept="image/*">
+                <br /> -->
+                Mod: <input type='file' name='fileUploaded' accept="text/*">
+                <br />
+                <div class="g-recaptcha" name="g-recaptcha" id="g-recaptcha" data-sitekey="6LeqSrQUAAAAAGoXiM7ofWxn1vEP4xkjtvlMV7G6"></div>
                 <input type='submit'>
     </body>
 </html>

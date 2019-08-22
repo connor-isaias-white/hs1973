@@ -19,16 +19,14 @@ app.get('/upload', function(req, res) {
 });
 app.route('/uploadit')
     .post(function (req, res, next) {
-
+        console.log(req.body);
         let fstream;
         req.pipe(req.busboy);
-        console.log("hi");
         req.busboy.on('file', function (fieldname, file, filename) {
-            console.log("hello");
             console.log("Uploading: " + filename);
 
             //Path where image will be uploaded
-            fstream = fs.createWriteStream(__dirname + '../mods/' + filename);
+            fstream = fs.createWriteStream(__dirname + '/../mods/' + filename);
             file.pipe(fstream);
             fstream.on('close', function () {
                 console.log("Upload Finished of " + filename);
