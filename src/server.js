@@ -10,28 +10,51 @@ app.use(busboy());
 app.use(express.static(path.join(__dirname, '../mods')));
 app.use(express.urlencoded());
 
+let data = JSON.parse(fs.readFileSync("mods/mods.json"));
+console.log(data);
+console.log(data[0]);
+data.push()
 app.get('/', function(req, res) {
-    res.sendfile("mcmods.html");
+    res.sendfile("src/mcmods.html");
 });
 
 app.get('/upload', function(req, res) {
-    res.sendfile("upload.html");
+    res.sendfile("src/upload.html");
 });
+
 app.route('/uploadit')
     .post(function (req, res, next) {
-        console.log(req.body);
+        upload = {}
         let fstream;
         req.pipe(req.busboy);
-        req.busboy.on('file', function (fieldname, file, filename) {
-            console.log("Uploading: " + filename);
+        //console.log(req);
+        req.busboy.on('file', function (field, file, filename) {
+            console.log("Uploading: ");
 
             //Path where image will be uploaded
+            upload["filename"] = filename;
             fstream = fs.createWriteStream(__dirname + '/../mods/' + filename);
             file.pipe(fstream);
             fstream.on('close', function () {
-                console.log("Upload Finished of " + filename);
-                res.redirect('/');
             });
+        });
+        req.busboy.on('field', function (fieldname, content) {
+            console.log("fieldname: ", fieldname);
+            if (fieldname == "g-recaptcha-response" && content=="" || fieldname == "Author" && content==""){
+                res.redirect('/upload');
+            }
+            else if (fieldname == "g-recaptcha-response" && content!="") {
+                console.log(upload);
+                data.append(upload)
+                json = JSON.stringify(data);
+                fs.writeFile('mods/mods.json', json, 'utf8', () => {res.redirect('/')});
+            }
+            else if (fieldname == "author" && content!="") {
+                upload["author"] = content;
+            }
+            else {
+                console.log(content);
+            }
         });
     });
 
