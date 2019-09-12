@@ -11,15 +11,20 @@ app.use(express.static(path.join(__dirname, '../mods')));
 app.use(express.urlencoded());
 
 let data = JSON.parse(fs.readFileSync("mods/mods.json"));
-console.log(data);
-console.log(data[0]);
-data.push()
 app.get('/', function(req, res) {
     res.sendfile("src/mcmods.html");
 });
 
 app.get('/upload', function(req, res) {
     res.sendfile("src/upload.html");
+});
+
+app.get('/script', function(req, res) {
+    res.sendfile("src/script.js");
+});
+
+app.get('/data', function(req, res) {
+    res.json(data);
 });
 
 app.route('/uploadit')
@@ -29,10 +34,9 @@ app.route('/uploadit')
         req.pipe(req.busboy);
         //console.log(req);
         req.busboy.on('file', function (field, file, filename) {
-            console.log("Uploading: ");
-
             //Path where image will be uploaded
-            upload["filename"] = filename;
+            console.log("field:", field);
+            upload[field] = filename;
             fstream = fs.createWriteStream(__dirname + '/../mods/' + filename);
             file.pipe(fstream);
             fstream.on('close', function () {
@@ -44,13 +48,12 @@ app.route('/uploadit')
                 res.redirect('/upload');
             }
             else if (fieldname == "g-recaptcha-response" && content!="") {
-                console.log(upload);
-                data.append(upload)
+                data.push(upload)
                 json = JSON.stringify(data);
                 fs.writeFile('mods/mods.json', json, 'utf8', () => {res.redirect('/')});
             }
-            else if (fieldname == "author" && content!="") {
-                upload["author"] = content;
+            else if (fieldname != "" && content!="") {
+                upload[fieldname] = content;
             }
             else {
                 console.log(content);
