@@ -23,6 +23,10 @@ app.get('/script', function(req, res) {
     res.sendfile("src/script.js");
 });
 
+app.get('/style', function(req, res) {
+    res.sendfile("src/style.css");
+});
+
 app.get('/data', function(req, res) {
     res.json(data);
 });

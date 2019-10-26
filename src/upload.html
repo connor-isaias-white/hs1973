@@ -2,10 +2,15 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <title>upload</title>
+        <link rel="stylesheet" href="/style" />
     </head>
     <body>
+        <h1>Cool Title </h1>
+        <div class="container">
         <form method='post' action='uploadit' enctype="multipart/form-data">
                 Author name: <input type="text" name="author" class="author" id="author" maxlength="30">
                 <br />
@@ -17,5 +22,6 @@
                 <br />
                 <div class="g-recaptcha" name="g-recaptcha" id="g-recaptcha" data-sitekey="6LeqSrQUAAAAAGoXiM7ofWxn1vEP4xkjtvlMV7G6"></div>
                 <input type='submit'>
+        </div>
     </body>
 </html>
